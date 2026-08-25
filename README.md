@@ -236,3 +236,5 @@ MIT
 ## Credits
 
 Built by **Mayank Sharma**
+
+Core architecture powered by [LangChain](https://github.com/langchain-ai/langchainjs) and [LangGraph](https://github.com/langchain-ai/langgraph). PDF ingestion pipeline built with [Supabase Vector Store](https://supabase.com/docs/guides/ai).
