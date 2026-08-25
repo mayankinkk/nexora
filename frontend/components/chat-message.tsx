@@ -1,6 +1,7 @@
 import { Copy } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 import { useState } from 'react';
 import { PDFDocument } from '@/types/graphTypes';
 import {
@@ -38,10 +39,13 @@ export function ChatMessage({ message }: ChatMessageProps) {
     message.sources &&
     message.sources.length > 0;
 
+  // Extract source references from content
+  const sourceRefs = message.content.match(/\[Source:.*?\]/g) || [];
+
   return (
     <div className={`flex ${isUser ? 'justify-end' : 'justify-start'}`}>
       <div
-        className={`max-w-[85%] ${isUser ? 'bg-black text-white' : 'bg-muted'} rounded-2xl px-4 py-2`}
+        className={`max-w-[85%] ${isUser ? 'bg-primary text-primary-foreground' : 'bg-muted'} rounded-2xl px-4 py-2`}
       >
         {isLoading ? (
           <div className="flex space-x-1 h-6 items-center">
@@ -51,7 +55,19 @@ export function ChatMessage({ message }: ChatMessageProps) {
           </div>
         ) : (
           <>
-            <p className="whitespace-pre-wrap">{message.content}</p>
+            <p className="whitespace-pre-wrap text-sm">{message.content}</p>
+
+            {/* Inline source citations */}
+            {sourceRefs.length > 0 && (
+              <div className="flex flex-wrap gap-1 mt-2">
+                {[...new Set(sourceRefs)].map((ref, i) => (
+                  <Badge key={i} variant="secondary" className="text-xs">
+                    {ref.replace('[Source: ', '').replace(']', '')}
+                  </Badge>
+                ))}
+              </div>
+            )}
+
             {!isUser && (
               <div className="flex gap-2 mt-2">
                 <Button
@@ -67,27 +83,33 @@ export function ChatMessage({ message }: ChatMessageProps) {
                 </Button>
               </div>
             )}
+
             {showSources && message.sources && (
               <Accordion type="single" collapsible className="w-full mt-2">
                 <AccordionItem value="sources" className="border-b-0">
                   <AccordionTrigger className="text-sm py-2 justify-start gap-2 hover:no-underline">
-                    View Sources ({message.sources.length})
+                    Source Documents ({message.sources.length} chunks)
                   </AccordionTrigger>
                   <AccordionContent>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    <div className="grid grid-cols-1 gap-2">
                       {message.sources?.map((source, index) => (
                         <Card
                           key={index}
-                          className="bg-background/50 transition-all duration-200 hover:bg-background hover:shadow-md hover:scale-[1.02] cursor-pointer"
+                          className="bg-background/50 transition-all duration-200 hover:bg-background hover:shadow-md"
                         >
                           <CardContent className="p-3">
-                            <p className="text-sm font-medium truncate">
-                              {source.metadata?.source ||
-                                source.metadata?.filename ||
-                                'N/A'}
-                            </p>
-                            <p className="text-sm text-muted-foreground">
-                              Page {source.metadata?.loc?.pageNumber || 'N/A'}
+                            <div className="flex items-center justify-between">
+                              <p className="text-xs font-medium truncate">
+                                {source.metadata?.filename ||
+                                  source.metadata?.source ||
+                                  'Document'}
+                              </p>
+                              <Badge variant="outline" className="text-xs ml-2">
+                                Page {source.metadata?.loc?.pageNumber || '?'}
+                              </Badge>
+                            </div>
+                            <p className="text-xs text-muted-foreground mt-1 line-clamp-2">
+                              {source.pageContent?.slice(0, 150)}...
                             </p>
                           </CardContent>
                         </Card>

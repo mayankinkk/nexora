@@ -2,7 +2,7 @@
   "name": "backend",
   "version": "0.0.1",
   "description": "Chat with your PDF using this AI agent",
-  "author": "Mayo Oshin",
+  "author": "Mayank Sharma",
   "license": "MIT",
   "private": true,
   "type": "module",

@@ -16,3 +16,20 @@ export const indexConfig: IndexConfigurables = {
   useSampleDocs: false,
   retrieverProvider: 'supabase',
 };
+
+export const summaryConfig = {
+  queryModel: 'openai/gpt-4o',
+  language: 'auto',
+};
+
+export const quizConfig = {
+  queryModel: 'openai/gpt-4o',
+  numQuestions: 5,
+  language: 'auto',
+};
+
+export const flashcardConfig = {
+  queryModel: 'openai/gpt-4o',
+  numCards: 10,
+  language: 'auto',
+};

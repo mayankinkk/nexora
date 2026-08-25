@@ -29,6 +29,12 @@ export const BaseConfigurationAnnotation = Annotation.Root({
    * The number of documents to retrieve.
    */
   k: Annotation<number>,
+
+  /**
+   * User ID for document scoping. Filters documents to only retrieve
+   * documents belonging to this user. Set to 'public' for shared docs.
+   */
+  userId: Annotation<string>,
 });
 
 /**
@@ -47,5 +53,6 @@ export function ensureBaseConfiguration(
     retrieverProvider: configurable.retrieverProvider || 'supabase',
     filterKwargs: configurable.filterKwargs || {},
     k: configurable.k || 5,
+    userId: configurable.userId || 'public',
   };
 }

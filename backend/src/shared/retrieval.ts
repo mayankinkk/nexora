@@ -23,14 +23,26 @@ export async function makeSupabaseRetriever(
     process.env.SUPABASE_URL ?? '',
     process.env.SUPABASE_SERVICE_ROLE_KEY ?? '',
   );
+
+  // Build filter for user-scoped documents
+  const filter: Record<string, any> = {
+    ...configuration.filterKwargs,
+  };
+
+  // If userId is set and not 'public', filter by user
+  if (configuration.userId && configuration.userId !== 'public') {
+    filter.user_id = configuration.userId;
+  }
+
   const vectorStore = new SupabaseVectorStore(embeddings, {
     client: supabaseClient,
     tableName: 'documents',
     queryName: 'match_documents',
   });
+
   return vectorStore.asRetriever({
     k: configuration.k,
-    filter: configuration.filterKwargs,
+    filter: filter,
   });
 }
 

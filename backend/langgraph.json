@@ -2,7 +2,12 @@
     "node_version": "20",
     "graphs": {
       "ingestion_graph": "./src/ingestion_graph/graph.ts:graph",
-      "retrieval_graph": "./src/retrieval_graph/graph.ts:graph"
+      "retrieval_graph": "./src/retrieval_graph/graph.ts:graph",
+      "summary_graph": "./src/summary_graph/graph.ts:graph",
+      "quiz_graph": "./src/quiz_graph/graph.ts:graph",
+      "flashcard_graph": "./src/flashcard_graph/graph.ts:graph",
+      "comparison_graph": "./src/comparison_graph/graph.ts:graph",
+      "search_graph": "./src/search_graph/graph.ts:graph"
     },
     "env": ".env",
     "dependencies":["."]

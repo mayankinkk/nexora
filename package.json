@@ -1,9 +1,9 @@
 {
-    "name": "ai-pdf-chatbot-langchain",
-    "description": "AI PDF chatbot template based on the book Learning LangChain (O'Reilly)",
+    "name": "nexora",
+    "description": "Nexora — AI-Powered Document Intelligence",
     "private": true,
     "version": "0.0.1",
-    "author": "Mayo Oshin",
+    "author": "Mayank Sharma",
     "license": "MIT",
     "workspaces": [
       "backend",

@@ -53,47 +53,42 @@ export type PDFDocument = Document & {
     };
     uuid?: string;
     source?: string;
+    filename?: string;
+    user_id?: string;
   };
 };
 
 export interface BaseConfiguration {
-  /**
-   * The vector store provider to use for retrieval.
-   * @default 'supabase'
-   */
   retrieverProvider?: 'supabase';
-
-  /**
-   * Additional keyword arguments to pass to the search function of the retriever for filtering.
-   * @default {}
-   */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   filterKwargs?: Record<string, any>;
-
-  /**
-   * The number of documents to retrieve.
-   * @default 5
-   */
   k?: number;
+  userId?: string;
 }
 
 export interface AgentConfiguration extends BaseConfiguration {
-  // models
-  /**
-   * The language model used for processing and refining queries.
-   * Should be in the form: provider/model-name.
-   */
   queryModel?: string;
 }
 
 export interface IndexConfiguration extends BaseConfiguration {
-  /**
-   * Path to a JSON file containing default documents to index.
-   */
   docsFile?: string;
-
-  /**
-   * Whether to use sample documents for indexing.
-   */
   useSampleDocs?: boolean;
 }
+
+export interface QuizQuestion {
+  question: string;
+  type: 'mcq' | 'true_false' | 'short_answer';
+  options?: string[];
+  correctAnswer: string;
+  explanation: string;
+  sourcePage: number;
+}
+
+export interface Flashcard {
+  front: string;
+  back: string;
+  category: 'concept' | 'definition' | 'formula' | 'fact';
+  sourcePage: number;
+}
+
+export type StudyTool = 'chat' | 'summary' | 'quiz' | 'flashcards' | 'compare' | 'search';

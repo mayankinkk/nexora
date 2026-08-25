@@ -1,19 +1,20 @@
-import type React from "react"
-import type { Metadata } from "next"
-import { GeistSans } from "geist/font/sans"
-import { Toaster } from "@/components/ui/toaster"
+import type React from 'react';
+import type { Metadata } from 'next';
+import { GeistSans } from 'geist/font/sans';
+import { Toaster } from '@/components/ui/toaster';
 
-import "./globals.css"
+import './globals.css';
 
 export const metadata: Metadata = {
-  title: "Learning LangChain Book Chatbot Demo",
-  description: "A chatbot demo based on Learning LangChain (O'Reilly)",
-}
+  title: 'Nexora — AI-Powered Document Intelligence',
+  description:
+    'Upload documents, PDFs, and study materials. Chat with your documents, generate summaries, quizzes, flashcards, and more — powered by AI.',
+};
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <html lang="en">
@@ -22,9 +23,5 @@ export default function RootLayout({
         <Toaster />
       </body>
     </html>
-  )
+  );
 }
-
-
-
-import './globals.css'
