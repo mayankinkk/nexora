@@ -25,7 +25,7 @@ export async function POST(req: Request) {
         streamMode: ['messages', 'updates'],
         config: {
           configurable: {
-            queryModel: 'openai/gpt-4o',
+            queryModel: 'groq/llama-3.3-70b-versatile',
             language: language || 'auto',
           },
         },
