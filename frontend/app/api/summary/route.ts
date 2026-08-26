@@ -25,7 +25,7 @@ export async function POST(req: Request) {
         streamMode: ['messages', 'updates'],
         config: {
           configurable: {
-            queryModel: 'groq/llama-3.3-70b-versatile',
+            queryModel: 'groq/qwen/qwen3.6-27b',
             language: language || 'auto',
           },
         },
