@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: nexora-backend
+    runtime: node
+    rootDir: backend
+    buildCommand: npm install --legacy-peer-deps && npx tsc
+    startCommand: npx @langchain/langgraph-cli dev --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: GROQ_API_KEY
+        sync: false
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+      - key: LANGCHAIN_PROJECT
+        value: nexora
+      - key: NODE_VERSION
+        value: 20
