@@ -9,6 +9,5 @@
       "comparison_graph": "./src/comparison_graph/graph.ts:graph",
       "search_graph": "./src/search_graph/graph.ts:graph"
     },
-    "env": ".env",
     "dependencies":["."]
   }
