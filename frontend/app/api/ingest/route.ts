@@ -9,15 +9,6 @@ const ALLOWED_FILE_TYPES = ['application/pdf'];
 
 export async function POST(request: NextRequest) {
   try {
-    if (!process.env.LANGGRAPH_INGESTION_ASSISTANT_ID) {
-      return NextResponse.json(
-        {
-          error: 'LANGGRAPH_INGESTION_ASSISTANT_ID is not set in your environment variables',
-        },
-        { status: 500 },
-      );
-    }
-
     const formData = await request.formData();
     const files: File[] = [];
     let userId = 'public';

@@ -28,17 +28,8 @@ export async function POST(req: Request) {
       );
     }
 
-    if (!process.env.LANGGRAPH_RETRIEVAL_ASSISTANT_ID) {
-      return new NextResponse(
-        JSON.stringify({
-          error: 'LANGGRAPH_RETRIEVAL_ASSISTANT_ID is not set',
-        }),
-        { status: 500, headers: { 'Content-Type': 'application/json' } },
-      );
-    }
-
     try {
-      const assistantId = process.env.LANGGRAPH_RETRIEVAL_ASSISTANT_ID;
+      const assistantId = process.env.LANGGRAPH_RETRIEVAL_ASSISTANT_ID || 'retrieval_graph';
       const serverClient = createServerClient();
 
       const stream = await serverClient.client.runs.stream(
