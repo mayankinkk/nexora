@@ -13,6 +13,7 @@
         "build": "echo 'Deploy frontend and backend separately'",
         "lint": "echo 'lint'"
     },
-    "devDependencies": {
+    "dependencies": {
+        "@huggingface/inference": "^4.13.28"
     }
 }

@@ -19,10 +19,11 @@ async function getEmbeddings() {
   }
 
   // Otherwise use free HuggingFace embeddings (local)
-  const { HuggingFaceEmbeddings } = await import(
-    '@langchain/community/embeddings/hf'
+  // Use free local HuggingFace embeddings (no API key needed)
+  const { HuggingFaceTransformersEmbeddings } = await import(
+    '@langchain/community/embeddings/hf_transformers'
   );
-  return new HuggingFaceEmbeddings({
+  return new HuggingFaceTransformersEmbeddings({
     modelName: 'Xenova/all-MiniLM-L6-v2',
   });
 }
