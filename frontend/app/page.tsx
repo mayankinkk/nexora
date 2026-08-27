@@ -26,7 +26,7 @@ import { QuizViewer } from '@/components/quiz-viewer';
 import { SummaryViewer } from '@/components/summary-viewer';
 import { SearchResults } from '@/components/search-results';
 import { ComparisonViewer } from '@/components/comparison-viewer';
-import { client } from '@/lib/langgraph-client';
+// LangGraph client is accessed server-side via API routes
 import {
   StudyTool,
   PDFDocument,
@@ -75,7 +75,9 @@ export default function Home() {
     const initThread = async () => {
       if (threadId) return;
       try {
-        const thread = await client.createThread();
+        const res = await fetch('/api/thread', { method: 'POST' });
+        if (!res.ok) throw new Error('Failed to create thread');
+        const thread = await res.json();
         setThreadId(thread.thread_id);
       } catch (error) {
         console.error('Error creating thread:', error);
