@@ -26,6 +26,7 @@ import { QuizViewer } from '@/components/quiz-viewer';
 import { SummaryViewer } from '@/components/summary-viewer';
 import { SearchResults } from '@/components/search-results';
 import { ComparisonViewer } from '@/components/comparison-viewer';
+import { extractTextFromPDF } from '@/lib/pdf-client';
 // LangGraph client is accessed server-side via API routes
 import {
   StudyTool,
@@ -527,7 +528,9 @@ export default function Home() {
     const selectedFiles = Array.from(e.target.files || []);
     if (selectedFiles.length === 0) return;
 
-    const nonPdfFiles = selectedFiles.filter((f) => f.type !== 'application/pdf');
+    const nonPdfFiles = selectedFiles.filter(
+      (f) => !f.name.toLowerCase().endsWith('.pdf'),
+    );
     if (nonPdfFiles.length > 0) {
       toast({
         title: 'Invalid file type',
@@ -539,24 +542,32 @@ export default function Home() {
 
     setIsUploading(true);
     try {
-      const formData = new FormData();
-      selectedFiles.forEach((file) => formData.append('files', file));
+      for (const file of selectedFiles) {
+        toast({
+          title: 'Processing...',
+          description: `Extracting text from ${file.name}...`,
+        });
 
-      const response = await fetch('/api/ingest', {
-        method: 'POST',
-        body: formData,
-      });
+        const pages = await extractTextFromPDF(file);
+        if (pages.length === 0) {
+          throw new Error(`Could not extract text from ${file.name}. The PDF may be image-based or empty.`);
+        }
 
-      if (!response.ok) {
-        const data = await response.json();
-        throw new Error(data.details || data.error || 'Failed to upload files');
+        const response = await fetch('/api/ingest', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ pages, filename: file.name }),
+        });
+
+        if (!response.ok) {
+          const data = await response.json();
+          throw new Error(data.details || data.error || 'Failed to ingest file');
+        }
+
+        setFiles((prev) => [...prev, file]);
+        setUploadedDocs((prev) => [...prev, file.name]);
       }
 
-      setFiles((prev) => [...prev, ...selectedFiles]);
-      setUploadedDocs((prev) => [
-        ...prev,
-        ...selectedFiles.map((f) => f.name),
-      ]);
       toast({
         title: 'Success',
         description: `${selectedFiles.length} file${selectedFiles.length > 1 ? 's' : ''} uploaded successfully`,
