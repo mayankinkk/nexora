@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { createServerClient } from '@/lib/langgraph-server';
 import { retrievalAssistantStreamConfig } from '@/constants/graphConfigs';
 
-export const runtime = 'edge';
+export const runtime = 'nodejs';
 
 export async function POST(req: Request) {
   try {
@@ -59,10 +59,10 @@ export async function POST(req: Request) {
               );
             }
           } catch (error) {
-            console.error('Streaming error:', error);
+            console.error('Streaming error:', JSON.stringify(error), error);
             controller.enqueue(
               encoder.encode(
-                `data: ${JSON.stringify({ error: 'Streaming error occurred' })}\n\n`,
+                `data: ${JSON.stringify({ error: 'Streaming error occurred', details: String(error) })}\n\n`,
               ),
             );
           } finally {
