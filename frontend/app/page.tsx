@@ -549,7 +549,7 @@ export default function Home() {
 
       if (!response.ok) {
         const data = await response.json();
-        throw new Error(data.error || 'Failed to upload files');
+        throw new Error(data.details || data.error || 'Failed to upload files');
       }
 
       setFiles((prev) => [...prev, ...selectedFiles]);
