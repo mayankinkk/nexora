@@ -48,22 +48,23 @@ export async function POST(request: NextRequest) {
     }
 
     const allDocs: Document[] = [];
+    const errors: string[] = [];
     for (const file of files) {
       try {
         const docs = await processPDF(file);
-        // Add user_id to each document's metadata
         docs.forEach((doc) => {
           doc.metadata.user_id = userId;
         });
         allDocs.push(...docs);
       } catch (error: any) {
         console.error(`Error processing file ${file.name}:`, error);
+        errors.push(`${file.name}: ${error.message}`);
       }
     }
 
     if (!allDocs.length) {
       return NextResponse.json(
-        { error: 'No valid documents extracted from uploaded files' },
+        { error: 'No valid documents extracted from uploaded files', details: errors },
         { status: 500 },
       );
     }
