@@ -191,16 +191,19 @@ export default function Home() {
           if (Array.isArray(data)) {
             const lastObj = data[data.length - 1];
             if (lastObj?.type === 'ai') {
-              const partialContent = lastObj.content ?? '';
-              if (typeof partialContent === 'string' && !partialContent.startsWith('{')) {
-                setMessages((prev) => {
-                  const newArr = [...prev];
-                  if (newArr.length > 0 && newArr[newArr.length - 1].role === 'assistant') {
-                    newArr[newArr.length - 1].content = partialContent;
-                    newArr[newArr.length - 1].sources = lastRetrievedDocsRef.current;
-                  }
-                  return newArr;
-                });
+              let partialContent = lastObj.content ?? '';
+              if (typeof partialContent === 'string') {
+                partialContent = partialContent.replace(/<think>[\s\S]*?<\/think>/g, '').replace(/<think>[\s\S]*$/g, '').trim();
+                if (partialContent && !partialContent.startsWith('{')) {
+                  setMessages((prev) => {
+                    const newArr = [...prev];
+                    if (newArr.length > 0 && newArr[newArr.length - 1].role === 'assistant') {
+                      newArr[newArr.length - 1].content = partialContent;
+                      newArr[newArr.length - 1].sources = lastRetrievedDocsRef.current;
+                    }
+                    return newArr;
+                  });
+                }
               }
             }
           }
